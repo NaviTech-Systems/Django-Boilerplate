@@ -1,0 +1,26 @@
+FROM pypy:3.7-7.3-slim
+
+RUN mkdir /api
+WORKDIR /api
+
+ADD . /api/
+
+
+ENV PIP_DEFAULT_TIMEOUT=100
+ENV DJANGO_ENV=dev
+ENV PORT=5000
+ENV PYTHONPATH=/usr/local/bin/pypy
+# RUN pypy3 -m pip install --upgrade pip
+RUN apt update && apt install -y build-essential libpq-dev libssl-dev python-dev
+RUN apt-get install wget apt-transport-https -y
+RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
+RUN echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-7.x.list
+RUN apt-get update && apt-get install logstash -y
+RUN /usr/share/logstash/bin/logstash-plugin install logstash-output-loki
+ENV PYTHONPATH=/usr/local/bin/pypy
+COPY logstash.conf /etc/logstash/conf.d/logstash.conf
+RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
+
+EXPOSE ${PORT}
+
+CMD ./manange.py runserver 0.0.0.0:${PORT}

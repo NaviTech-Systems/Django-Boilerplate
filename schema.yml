@@ -1,0 +1,2901 @@
+openapi: 3.0.3
+info:
+  title: Planner API
+  version: 0.1.0
+  description: Planner api used in sveltekit
+paths:
+  /api/auth/login/:
+    post:
+      operationId: api_auth_login_create
+      description: |-
+        Check the credentials and return the REST Token
+        if the credentials are valid and authenticated.
+        Calls Django Auth login method to register User ID
+        in Django session framework
+
+        Accept the following POST parameters: username, password
+        Return the REST Framework Token Object's key.
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Login"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Login"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Login"
+          description: ""
+  /api/auth/login/github/:
+    post:
+      operationId: api_auth_login_github_create
+      description: |-
+        class used for social authentications
+        example usage for facebook with access_token
+        -------------
+        from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+
+        class FacebookLogin(SocialLoginView):
+            adapter_class = FacebookOAuth2Adapter
+        -------------
+
+        example usage for facebook with code
+
+        -------------
+        from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+        from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
+        class FacebookLogin(SocialLoginView):
+            adapter_class = FacebookOAuth2Adapter
+            client_class = OAuth2Client
+            callback_url = 'localhost:8000'
+        -------------
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SocialLogin"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/SocialLogin"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/SocialLogin"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SocialLogin"
+          description: ""
+  /api/auth/login/google/:
+    post:
+      operationId: api_auth_login_google_create
+      description: |-
+        class used for social authentications
+        example usage for facebook with access_token
+        -------------
+        from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+
+        class FacebookLogin(SocialLoginView):
+            adapter_class = FacebookOAuth2Adapter
+        -------------
+
+        example usage for facebook with code
+
+        -------------
+        from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+        from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
+        class FacebookLogin(SocialLoginView):
+            adapter_class = FacebookOAuth2Adapter
+            client_class = OAuth2Client
+            callback_url = 'localhost:8000'
+        -------------
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SocialLogin"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/SocialLogin"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/SocialLogin"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SocialLogin"
+          description: ""
+  /api/auth/logout/:
+    get:
+      operationId: api_auth_logout_retrieve
+      description: |-
+        Calls Django logout method and delete the Token object
+        assigned to the current User object.
+
+        Accepts/Returns nothing.
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: api_auth_logout_create
+      description: |-
+        Calls Django logout method and delete the Token object
+        assigned to the current User object.
+
+        Accepts/Returns nothing.
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/auth/password/change/:
+    post:
+      operationId: api_auth_password_change_create
+      description: |-
+        Calls Django Auth SetPasswordForm save method.
+
+        Accepts the following POST parameters: new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordChange"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PasswordChange"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PasswordChange"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasswordChange"
+          description: ""
+  /api/auth/password/reset/:
+    post:
+      operationId: api_auth_password_reset_create
+      description: |-
+        Calls Django Auth PasswordResetForm save method.
+
+        Accepts the following POST parameters: email
+        Returns the success/fail message.
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordReset"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PasswordReset"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PasswordReset"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasswordReset"
+          description: ""
+  /api/auth/password/reset/confirm/:
+    post:
+      operationId: api_auth_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordResetConfirm"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PasswordResetConfirm"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PasswordResetConfirm"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasswordResetConfirm"
+          description: ""
+  /api/auth/refresh/:
+    post:
+      operationId: api_auth_refresh_create
+      description: |-
+        API View that returns a refreshed token (with new expiration) based on
+        existing token
+
+        If 'orig_iat' field (original issued-at-time) is found, will first check
+        if it's within expiration window, then copy it to the new token
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshJSONWebToken"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/RefreshJSONWebToken"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/RefreshJSONWebToken"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RefreshJSONWebToken"
+          description: ""
+  /api/auth/registration/:
+    post:
+      operationId: api_auth_registration_create
+      description: ""
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Register"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Register"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Register"
+          description: ""
+  /api/auth/user/:
+    get:
+      operationId: api_auth_user_retrieve
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: ""
+    put:
+      operationId: api_auth_user_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/User"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: ""
+    patch:
+      operationId: api_auth_user_partial_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedUser"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedUser"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedUser"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: ""
+  /api/chat/:
+    get:
+      operationId: api_chat_list
+      description: ""
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Chat"
+          description: ""
+    post:
+      operationId: api_chat_create
+      description: ""
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Chat"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Chat"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Chat"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chat"
+          description: ""
+  /api/chat/{chat_id}/messages:
+    get:
+      operationId: api_chat_messages_list
+      description: ""
+      parameters:
+        - in: path
+          name: chat_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+          description: ""
+    post:
+      operationId: api_chat_messages_create
+      description: ""
+      parameters:
+        - in: path
+          name: chat_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Message"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Message"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Message"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+          description: ""
+  /api/chat/{id}:
+    get:
+      operationId: api_chat_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Chat.
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chat"
+          description: ""
+    put:
+      operationId: api_chat_update
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Chat.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Chat"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Chat"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Chat"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chat"
+          description: ""
+    patch:
+      operationId: api_chat_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Chat.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedChat"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedChat"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedChat"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chat"
+          description: ""
+    delete:
+      operationId: api_chat_destroy
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Chat.
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/chat/users:
+    get:
+      operationId: api_chat_users_list
+      description: ""
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+          description: ""
+  /api/invitations/{code}:
+    get:
+      operationId: api_invitations_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+          description: ""
+  /api/invitations/accept/{code}:
+    put:
+      operationId: api_invitations_accept_update
+      description: ""
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Invitation"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Invitation"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Invitation"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+          description: ""
+    patch:
+      operationId: api_invitations_accept_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedInvitation"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedInvitation"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedInvitation"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+          description: ""
+  /api/invitations/send:
+    post:
+      operationId: api_invitations_send_create
+      description: ""
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Invitation"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Invitation"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Invitation"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invitation"
+          description: ""
+  /api/projects/:
+    get:
+      operationId: api_projects_list
+      description: ""
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+          description: ""
+    post:
+      operationId: api_projects_create
+      description: ""
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Project"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Project"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Project"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+          description: ""
+  /api/projects/{project_id}:
+    get:
+      operationId: api_projects_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+          description: ""
+    put:
+      operationId: api_projects_update
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Project"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Project"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Project"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+          description: ""
+    patch:
+      operationId: api_projects_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedProject"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedProject"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedProject"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+          description: ""
+    delete:
+      operationId: api_projects_destroy
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/projects/{project_id}/detailed:
+    get:
+      operationId: api_projects_detailed_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDetailed"
+          description: ""
+    put:
+      operationId: api_projects_detailed_update
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ProjectDetailed"
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectDetailed"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDetailed"
+          description: ""
+    patch:
+      operationId: api_projects_detailed_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedProjectDetailed"
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedProjectDetailed"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDetailed"
+          description: ""
+    delete:
+      operationId: api_projects_detailed_destroy
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/projects/{project_id}/issues:
+    get:
+      operationId: api_projects_issues_list
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Issue"
+          description: ""
+    post:
+      operationId: api_projects_issues_create
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Issue"
+          description: ""
+  /api/projects/{project_id}/statuses:
+    get:
+      operationId: api_projects_statuses_list
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IssueStatus"
+          description: ""
+    post:
+      operationId: api_projects_statuses_create
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IssueStatus"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/IssueStatus"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/IssueStatus"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IssueStatus"
+          description: ""
+  /api/projects/{project_id}/teams/:
+    get:
+      operationId: api_projects_teams_list
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+          description: ""
+    post:
+      operationId: api_projects_teams_create
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Team"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Team"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Team"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+          description: ""
+  /api/projects/{project_id}/users:
+    get:
+      operationId: api_projects_users_list
+      description: ""
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+          description: ""
+  /api/projects/general/issues:
+    get:
+      operationId: api_projects_general_issues_list
+      description: ""
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IssueDetailed"
+          description: ""
+  /api/projects/issue/{issue_id}/subissues/:
+    get:
+      operationId: api_projects_issue_subissues_list
+      description: ""
+      parameters:
+        - in: path
+          name: issue_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubIssue"
+          description: ""
+    post:
+      operationId: api_projects_issue_subissues_create
+      description: ""
+      parameters:
+        - in: path
+          name: issue_id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubIssue"
+          description: ""
+  /api/projects/issue/{id}:
+    get:
+      operationId: api_projects_issue_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Issue.
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Issue"
+          description: ""
+    put:
+      operationId: api_projects_issue_update
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Issue.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Issue"
+          description: ""
+    patch:
+      operationId: api_projects_issue_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Issue.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedIssue"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Issue"
+          description: ""
+    delete:
+      operationId: api_projects_issue_destroy
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Issue.
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/projects/priorities:
+    get:
+      operationId: api_projects_priorities_list
+      description: ""
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Priority"
+          description: ""
+  /api/projects/status/{id}:
+    get:
+      operationId: api_projects_status_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Issue Status.
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IssueStatus"
+          description: ""
+    put:
+      operationId: api_projects_status_update
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Issue Status.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IssueStatus"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/IssueStatus"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/IssueStatus"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IssueStatus"
+          description: ""
+    patch:
+      operationId: api_projects_status_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Issue Status.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedIssueStatus"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedIssueStatus"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedIssueStatus"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IssueStatus"
+          description: ""
+    delete:
+      operationId: api_projects_status_destroy
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Issue Status.
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/projects/subissue/{sub_id}:
+    get:
+      operationId: api_projects_subissue_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: sub_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubIssue"
+          description: ""
+    put:
+      operationId: api_projects_subissue_update
+      description: ""
+      parameters:
+        - in: path
+          name: sub_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubIssue"
+          description: ""
+    patch:
+      operationId: api_projects_subissue_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: sub_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedSubIssue"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubIssue"
+          description: ""
+    delete:
+      operationId: api_projects_subissue_destroy
+      description: ""
+      parameters:
+        - in: path
+          name: sub_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/projects/teams/{id}:
+    get:
+      operationId: api_projects_teams_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Team.
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+          description: ""
+    put:
+      operationId: api_projects_teams_update
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Team.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Team"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Team"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Team"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+          description: ""
+    patch:
+      operationId: api_projects_teams_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Team.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedTeam"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedTeam"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedTeam"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+          description: ""
+    delete:
+      operationId: api_projects_teams_destroy
+      description: ""
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Team.
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/users/:
+    get:
+      operationId: api_users_list
+      description: ""
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUserList"
+          description: ""
+  /api/users/{username}:
+    get:
+      operationId: api_users_retrieve
+      description: ""
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User Detailed"
+          description: ""
+    put:
+      operationId: api_users_update
+      description: ""
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User Detailed"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/User Detailed"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/User Detailed"
+        required: true
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User Detailed"
+          description: ""
+    patch:
+      operationId: api_users_partial_update
+      description: ""
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedUser Detailed"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedUser Detailed"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedUser Detailed"
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User Detailed"
+          description: ""
+    delete:
+      operationId: api_users_destroy
+      description: ""
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+      tags:
+        - api
+      security:
+        - jwtAuth: []
+        - basicAuth: []
+      responses:
+        "204":
+          description: No response body
+components:
+  schemas:
+    Activity:
+      type: object
+      properties:
+        value:
+          type: string
+          readOnly: true
+        date:
+          type: string
+          readOnly: true
+      required:
+        - date
+        - value
+    Chat:
+      type: object
+      properties:
+        partecipants:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        head:
+          type: string
+          readOnly: true
+        team:
+          type: integer
+          nullable: true
+      required:
+        - head
+        - id
+        - permissions
+    Invitation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        project:
+          $ref: "#/components/schemas/Project"
+        receiver:
+          $ref: "#/components/schemas/User"
+        sender:
+          $ref: "#/components/schemas/User"
+        receiver_email:
+          type: string
+          format: email
+          maxLength: 254
+        code:
+          type: string
+          readOnly: true
+        accepted:
+          type: boolean
+          readOnly: true
+      required:
+        - accepted
+        - code
+        - id
+        - project
+        - receiver_email
+    Issue:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        reporter:
+          allOf:
+            - $ref: "#/components/schemas/Project User"
+          readOnly: true
+        asignee:
+          $ref: "#/components/schemas/Project User"
+        status:
+          $ref: "#/components/schemas/IssueStatus"
+        team:
+          $ref: "#/components/schemas/Team"
+        sub_issues:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubIssue"
+          readOnly: true
+        priority:
+          $ref: "#/components/schemas/Priority"
+        ownId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        started_on:
+          type: string
+          format: date
+          nullable: true
+        due_to:
+          type: string
+          format: date
+          nullable: true
+        order_pos:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        project:
+          type: integer
+      required:
+        - created_on
+        - id
+        - permissions
+        - project
+        - reporter
+        - status
+        - sub_issues
+        - title
+    IssueDetailed:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        reporter:
+          allOf:
+            - $ref: "#/components/schemas/Project User"
+          readOnly: true
+        asignee:
+          $ref: "#/components/schemas/Project User"
+        status:
+          $ref: "#/components/schemas/IssueStatus"
+        project:
+          $ref: "#/components/schemas/Project"
+        team:
+          $ref: "#/components/schemas/Team"
+        priority:
+          $ref: "#/components/schemas/Priority"
+        ownId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        started_on:
+          type: string
+          format: date
+          nullable: true
+        due_to:
+          type: string
+          format: date
+          nullable: true
+        order_pos:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+        - created_on
+        - id
+        - project
+        - reporter
+        - status
+        - title
+    IssueMin:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        project:
+          $ref: "#/components/schemas/Project"
+        ownId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        started_on:
+          type: string
+          format: date
+          nullable: true
+        due_to:
+          type: string
+          format: date
+          nullable: true
+        order_pos:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        reporter:
+          type: integer
+        asignee:
+          type: integer
+          nullable: true
+        status:
+          type: integer
+        team:
+          type: integer
+          nullable: true
+        priority:
+          type: integer
+          nullable: true
+      required:
+        - created_on
+        - id
+        - project
+        - reporter
+        - title
+    IssueStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        color:
+          type: string
+          maxLength: 7
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        order_pos:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        project:
+          type: integer
+      required:
+        - color
+        - created_on
+        - id
+        - name
+        - permissions
+        - project
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - password
+    Message:
+      type: object
+      properties:
+        content:
+          type: string
+        author:
+          allOf:
+            - $ref: "#/components/schemas/User"
+          readOnly: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+      required:
+        - author
+        - content
+        - created_on
+        - permissions
+    PaginatedUserList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+    PasswordChange:
+      type: object
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+      required:
+        - new_password1
+        - new_password2
+    PasswordReset:
+      type: object
+      description: Serializer for requesting a password reset e-mail.
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+        - email
+    PasswordResetConfirm:
+      type: object
+      description: Serializer for requesting a password reset e-mail.
+      properties:
+        new_password1:
+          type: string
+          maxLength: 128
+        new_password2:
+          type: string
+          maxLength: 128
+        uid:
+          type: string
+        token:
+          type: string
+      required:
+        - new_password1
+        - new_password2
+        - token
+        - uid
+    PatchedChat:
+      type: object
+      properties:
+        partecipants:
+          type: array
+          items:
+            type: integer
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        head:
+          type: string
+          readOnly: true
+        team:
+          type: integer
+          nullable: true
+    PatchedInvitation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        project:
+          type: integer
+        receiver:
+          type: integer
+          readOnly: true
+        sender:
+          type: integer
+          readOnly: true
+        receiver_email:
+          type: string
+          format: email
+          maxLength: 254
+        code:
+          type: string
+          readOnly: true
+        accepted:
+          type: boolean
+          readOnly: true
+    PatchedIssue:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        reporter:
+          allOf:
+            - $ref: "#/components/schemas/Project User"
+          readOnly: true
+        asignee:
+          type: integer
+        status:
+          type: integer
+        team:
+          type: integer
+        sub_issues:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubIssue"
+          readOnly: true
+        priority:
+          type: integer
+        ownId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        started_on:
+          type: string
+          format: date
+          nullable: true
+        due_to:
+          type: string
+          format: date
+          nullable: true
+        order_pos:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        project:
+          type: integer
+    PatchedIssueStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        color:
+          type: string
+          maxLength: 7
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        order_pos:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        project:
+          type: integer
+    PatchedProject:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+        short_name:
+          type: string
+          maxLength: 4
+        id:
+          type: integer
+          readOnly: true
+        icon:
+          type: string
+          format: uri
+    PatchedProjectDetailed:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        owner:
+          type: integer
+        members:
+          type: array
+          items:
+            type: integer
+        statuses:
+          type: array
+          items:
+            $ref: "#/components/schemas/IssueStatus"
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMin"
+        name:
+          type: string
+          maxLength: 50
+        short_name:
+          type: string
+          maxLength: 4
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        icon:
+          type: string
+          format: uri
+    PatchedSubIssue:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        asignee:
+          type: integer
+        status:
+          type: integer
+        priority:
+          type: integer
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        started_on:
+          type: string
+          format: date
+          nullable: true
+        due_to:
+          type: string
+          format: date
+          nullable: true
+        ownId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        issue:
+          type: integer
+    PatchedTeam:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        leader:
+          type: integer
+        members:
+          type: array
+          items:
+            type: integer
+        name:
+          type: string
+          maxLength: 50
+        project:
+          type: integer
+    PatchedUser:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        profile:
+          $ref: "#/components/schemas/Profile"
+        id:
+          type: integer
+          readOnly: true
+    PatchedUser Detailed:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        profile:
+          $ref: "#/components/schemas/Profile"
+        id:
+          type: integer
+          readOnly: true
+        data:
+          allOf:
+            - $ref: "#/components/schemas/User Data"
+          readOnly: true
+    Priority:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        color:
+          type: string
+          maxLength: 7
+        icon:
+          type: string
+          maxLength: 16
+      required:
+        - color
+        - icon
+        - id
+        - name
+    Profile:
+      type: object
+      properties:
+        avatar:
+          type: string
+          format: uri
+        company:
+          type: string
+          maxLength: 150
+        department:
+          type: string
+          maxLength: 150
+        job:
+          type: string
+          maxLength: 150
+    Project:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+        short_name:
+          type: string
+          maxLength: 4
+        id:
+          type: integer
+          readOnly: true
+        icon:
+          type: string
+          format: uri
+      required:
+        - id
+        - name
+        - short_name
+    Project User:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        profile:
+          $ref: "#/components/schemas/Project User Profile"
+        id:
+          type: integer
+          readOnly: true
+      required:
+        - email
+        - first_name
+        - id
+        - last_name
+        - profile
+        - username
+    Project User Profile:
+      type: object
+      properties:
+        avatar:
+          type: string
+          format: uri
+        company:
+          type: string
+          maxLength: 150
+        department:
+          type: string
+          maxLength: 150
+        job:
+          type: string
+          maxLength: 150
+    ProjectDetailed:
+      type: object
+      description: Adds nested create feature
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        owner:
+          $ref: "#/components/schemas/Project User"
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project User"
+        statuses:
+          type: array
+          items:
+            $ref: "#/components/schemas/IssueStatus"
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamMin"
+        name:
+          type: string
+          maxLength: 50
+        short_name:
+          type: string
+          maxLength: 4
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        icon:
+          type: string
+          format: uri
+      required:
+        - created_on
+        - id
+        - name
+        - permissions
+        - short_name
+        - statuses
+        - teams
+    ProjectMin:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+        short_name:
+          type: string
+          maxLength: 4
+        id:
+          type: integer
+          readOnly: true
+        icon:
+          type: string
+          format: uri
+      required:
+        - id
+        - name
+        - short_name
+    RefreshJSONWebToken:
+      type: object
+      description: Refresh an access token.
+      properties:
+        token:
+          type: string
+      required:
+        - token
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+          writeOnly: true
+        first_name:
+          type: string
+          writeOnly: true
+        last_name:
+          type: string
+          writeOnly: true
+        password1:
+          type: string
+          writeOnly: true
+        password2:
+          type: string
+          writeOnly: true
+      required:
+        - email
+        - first_name
+        - last_name
+        - password1
+        - password2
+        - username
+    SocialLogin:
+      type: object
+      properties:
+        access_token:
+          type: string
+        code:
+          type: string
+    SubIssue:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        asignee:
+          $ref: "#/components/schemas/Project User"
+        status:
+          $ref: "#/components/schemas/IssueStatus"
+        priority:
+          $ref: "#/components/schemas/Priority"
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+        started_on:
+          type: string
+          format: date
+          nullable: true
+        due_to:
+          type: string
+          format: date
+          nullable: true
+        ownId:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        issue:
+          type: integer
+      required:
+        - created_on
+        - id
+        - issue
+        - permissions
+        - status
+        - title
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permissions:
+          type: string
+          readOnly: true
+        leader:
+          $ref: "#/components/schemas/Project User"
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project User"
+        name:
+          type: string
+          maxLength: 50
+        project:
+          type: integer
+      required:
+        - id
+        - leader
+        - members
+        - name
+        - permissions
+        - project
+    TeamMin:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        project:
+          allOf:
+            - $ref: "#/components/schemas/ProjectMin"
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        leader:
+          type: integer
+        members:
+          type: array
+          items:
+            type: integer
+      required:
+        - id
+        - leader
+        - members
+        - name
+        - project
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        profile:
+          $ref: "#/components/schemas/Profile"
+        id:
+          type: integer
+          readOnly: true
+      required:
+        - email
+        - first_name
+        - id
+        - last_name
+        - profile
+        - username
+    User Data:
+      type: object
+      properties:
+        projects_count:
+          type: string
+          readOnly: true
+        active_issues:
+          type: string
+          readOnly: true
+        asigned_issues:
+          type: array
+          items:
+            $ref: "#/components/schemas/Activity"
+        reported_issues:
+          type: array
+          items:
+            $ref: "#/components/schemas/Activity"
+        part_projects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project"
+          readOnly: true
+        last_issues:
+          type: array
+          items:
+            $ref: "#/components/schemas/IssueMin"
+          readOnly: true
+      required:
+        - active_issues
+        - asigned_issues
+        - last_issues
+        - part_projects
+        - projects_count
+        - reported_issues
+    User Detailed:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        first_name:
+          type: string
+          maxLength: 255
+        last_name:
+          type: string
+          maxLength: 255
+        profile:
+          $ref: "#/components/schemas/Profile"
+        id:
+          type: integer
+          readOnly: true
+        data:
+          allOf:
+            - $ref: "#/components/schemas/User Data"
+          readOnly: true
+      required:
+        - data
+        - email
+        - first_name
+        - id
+        - last_name
+        - profile
+        - username
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,19 @@
+FROM pypy:3.7-7.3-slim
+
+RUN mkdir /api
+WORKDIR /api
+
+ADD . /api/
+
+ENV PIP_DEFAULT_TIMEOUT=100
+ENV DJANGO_ENV=dev
+ENV PORT=5000
+ENV PYTHONPATH=/usr/local/bin/pypy
+RUN pypy3 -m pip install --upgrade pip
+RUN apt update && apt install -y build-essential libpq-dev libssl-dev python-dev
+ENV PYTHONPATH=/usr/local/bin/pypy
+RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
+
+EXPOSE ${PORT}
+
+CMD daphne planner.asgi:application -b 0.0.0.0 -p 5000
