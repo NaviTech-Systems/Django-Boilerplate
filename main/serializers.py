@@ -15,7 +15,7 @@ class RelatedFieldAlternative(serializers.PrimaryKeyRelatedField):
         super(RelatedFieldAlternative, self).__init__(**kwargs)
 
     def use_pk_only_optimization(self):
-        return False if self.serializer else True
+        return not self.serializer
 
     def to_representation(self, instance):
         if self.serializer:
