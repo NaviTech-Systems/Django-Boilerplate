@@ -7,9 +7,9 @@ import sys
 def main():
     """Run administrative tasks."""
     if "DJANGO_ENV" in os.environ and os.environ["DJANGO_ENV"] == "prod":
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "planner.settings")
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
     else:
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "planner.settings-dev")
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings-dev")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

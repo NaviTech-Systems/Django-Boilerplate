@@ -1,4 +1,4 @@
-from planner.settings import LOG_PATH
+from project.settings import LOG_PATH
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from django.http import JsonResponse
