@@ -3,7 +3,7 @@ from allauth.utils import email_address_exists
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 from rest_framework import serializers
-from users.models import Profile, User
+from users.models import User
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -16,11 +16,10 @@ class RegisterSerializer(serializers.Serializer):
 
     def validate_email(self, email):
         email = get_adapter().clean_email(email)
-        if allauth_settings.UNIQUE_EMAIL:
-            if email and email_address_exists(email):
-                raise serializers.ValidationError(
-                    ("A user is already registered with this e-mail address.")
-                )
+        if allauth_settings.UNIQUE_EMAIL and email and email_address_exists(email):
+            raise serializers.ValidationError(
+                ("A user is already registered with this e-mail address.")
+            )
         return email
 
     def validate_password1(self, password):
