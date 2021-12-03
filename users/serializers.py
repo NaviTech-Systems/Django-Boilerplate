@@ -1,11 +1,7 @@
 from rest_framework import serializers
-from .models import User, Profile
-from projects.serializers import IssueMinSerializer, ProjectSerializer
+from .models import User
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from dry_rest_permissions.generics import DRYPermissionsField
-from projects.models import Project, Issue
-from django.db.models import Q
-from django.db.models import Sum
 
 
 
