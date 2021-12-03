@@ -25,10 +25,9 @@ class GoogleOAuth2RestAdapter(OAuth2Adapter):
         )
         resp.raise_for_status()
         extra_data = resp.json()
-        login = self.get_provider().sociallogin_from_response(
+        return self.get_provider().sociallogin_from_response(
             request, extra_data
         )
-        return login
 
 
 oauth2_login = OAuth2LoginView.adapter_view(GoogleOAuth2RestAdapter)

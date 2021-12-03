@@ -1,17 +1,15 @@
 from rest_framework.generics import (
     ListAPIView,
     RetrieveUpdateDestroyAPIView,
-    UpdateAPIView,
 )
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from .serializers import (
-    ProfileSerializer,
     UserSerializer,
     UserDetailedSerializer,
 )
 from dry_rest_permissions.generics import DRYPermissions
-from .models import Profile, User
+from .models import User
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -33,11 +31,3 @@ class UserView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     lookup_field = "username"
     lookup_url_kwarg = "username"
-
-
-class UpdateAvatarView(UpdateAPIView):
-    permission_classes = [IsAuthenticated, DRYPermissions]
-    serializer_class = ProfileSerializer
-    queryset = Profile.objects.all()
-    lookup_field = "user_id"
-    lookup_url_kwarg = "user_id"

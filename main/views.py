@@ -15,9 +15,7 @@ class LogAdd(APIView):
         data = request.data
 
         data.__setitem__("timestamp", now().isoformat())
-        f = open(f"{LOG_PATH}/frontend.log.json", "a")
-        f.write(json.dumps(data))
-        f.write("\n")
-        f.close()
-
+        with open(f"{LOG_PATH}/frontend.log.json", "a") as f:
+            f.write(json.dumps(data))
+            f.write("\n")
         return JsonResponse({"detail": "OK"})

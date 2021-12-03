@@ -70,11 +70,11 @@ class RegisterView(CreateAPIView):
         ):
             return {"detail": _("Verification e-mail sent.")}
 
-        if getattr(settings, "REST_USE_JWT", False):
-            data = {"user": user, "token": self.token}
-            return JWTSerializer(data).data
-        else:
+        if not getattr(settings, "REST_USE_JWT", False):
             return TokenSerializer(user.auth_token).data
+
+        data = {"user": user, "token": self.token}
+        return JWTSerializer(data).data
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -123,8 +123,8 @@ class RegisterView(CreateAPIView):
         return user
 
     def get_response_serializer(self):
-        if getattr(settings, "REST_USE_JWT", False):
-            response_serializer = JWTSerializer
-        else:
-            response_serializer = TokenSerializer
-        return response_serializer
+        return (
+            JWTSerializer
+            if getattr(settings, "REST_USE_JWT", False)
+            else TokenSerializer
+        )

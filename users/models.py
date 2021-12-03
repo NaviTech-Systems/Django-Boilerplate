@@ -74,30 +74,6 @@ class User(ExportModelOperationsMixin("user"), AbstractBaseUser):
     def get_short_name(self):
         return self.first_name
 
-    def get_asigned_issues_chart(self):
-        return (
-            self.asigned_issues.annotate(date=TruncDay("created_on"))
-            .values("date")
-            .annotate(value=Count("id", distinct=True))
-            .values(
-                "date",
-                "value",
-            )
-        )
-
-    def get_reported_issues_chart(self):
-        return (
-            self.reported_issues.annotate(date=TruncDay("created_on"))
-            .values("date")
-            .annotate(value=Count("id", distinct=True))
-            .values(
-                "date",
-                "value",
-            )
-        )
-
-    def get_last_issues(self):
-        return self.asigned_issues.order_by("-created_on")[:5]
 
     def has_object_read_permission(self, request):
         return True
@@ -123,43 +99,3 @@ class User(ExportModelOperationsMixin("user"), AbstractBaseUser):
             models.Index(fields=["id"]),
         ]
 
-
-class Profile(models.Model):
-
-    user = models.OneToOneField(
-        "users.User", on_delete=models.CASCADE, related_name="profile"
-    )
-    avatar = models.ImageField(
-        blank=False,
-        null=False,
-        upload_to="users/avatars",
-        default="users/avatars/default.jpg",
-    )
-    department = models.CharField(max_length=150, blank=True, default="")
-    company = models.CharField(max_length=150, blank=True, default="")
-    job = models.CharField(max_length=150, blank=True, default="")
-
-    def has_object_read_permission(self, request):
-        return True
-
-    def has_object_write_permission(self, request):
-        return request.user.id == self.user_id
-
-    @staticmethod
-    def has_read_permission(request):
-        return True
-
-    @staticmethod
-    def has_write_permission(request):
-        return True
-
-    @staticmethod
-    def has_create_permission(request):
-        return True
-
-    class Meta:
-        verbose_name = "Profile"
-        verbose_name_plural = "Profiles"
-
-    def __str__(self):
-        return self.user.username
